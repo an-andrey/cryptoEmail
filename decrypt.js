@@ -12,7 +12,7 @@ app.set("view engine", "ejs");
 app.engine("ejs", ejsMate);
 
 app.get("/", (req, res) => {
-  res.render("main.ejs", { ceasarAns: "msg", rsaAns: 123 });
+  res.render("main.ejs");
 });
 
 app.post("/", async (req, res) => {
