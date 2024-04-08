@@ -37,7 +37,8 @@ app.post("/", async (req, res) => {
   // send mail with defined transport object
   const info = await transporter.sendMail(msg);
 
+  res.send({ status: true });
   console.log("Message sent!");
 });
 
-app.listen(8080, () => console.log("listening on port 8080"));
+app.listen(3000, () => console.log("listening on port 3000"));
