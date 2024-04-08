@@ -150,7 +150,7 @@
               <b
                 ><a
                   href="https://www.geeksforgeeks.org/caesar-cipher-in-cryptography/"
-                  >Ceasar Cipher:</a
+                  >Caesar Cipher:</a
                 ></b
               >
               the encrypted message is
@@ -194,10 +194,10 @@
 
       <div class="card text-center mx-auto box">
         <div class="card-body d-flex flex-column">
-          <h4 class="card-title mb-3">Ceasar cipher</h4>
+          <h4 class="card-title mb-3">Caesar cipher</h4>
           <div class="mb-3">
             <input
-              id="ceasarTxt"
+              id="caesarTxt"
               type="text"
               name="txt"
               placeholder="Answer"
@@ -205,10 +205,10 @@
             />
           </div>
           <div>
-            <button id="ceasarBtn" class="btn btn-success">Check Answer</button>
+            <button id="caesarBtn" class="btn btn-success">Check Answer</button>
           </div>
         </div>
-        <div id="ceasarAns" class="card-footer" style="height: 40px"></div>
+        <div id="caesarAns" class="card-footer" style="height: 40px"></div>
       </div>
 
       <div class="card text-center mx-auto box">
@@ -235,15 +235,15 @@
       studentName = document.getElementById("studentName");
       rsaAns = document.getElementById("rsaAns");
       rsaText = document.getElementById("rsaTxt");
-      ceasarAns = document.getElementById("ceasarAns");
-      ceasarText = document.getElementById("ceasarTxt");
+      caesarAns = document.getElementById("caesarAns");
+      caesarText = document.getElementById("caesarTxt");
 
       document
         .getElementById("rsaBtn")
         .addEventListener("click", () => checkAns("Rsa"));
       document
-        .getElementById("ceasarBtn")
-        .addEventListener("click", () => checkAns("Ceasar"));
+        .getElementById("caesarBtn")
+        .addEventListener("click", () => checkAns("Caesar"));
 
       openModal = function () {
         // Get the modal
@@ -271,7 +271,7 @@
           if (cipherName == "rsa") {
             answer = rsaText.value;
           } else {
-            answer = ceasarText.value;
+            answer = caesarText.value;
           }
           let response = await fetch("/", {
             method: "POST",
@@ -305,15 +305,15 @@
             setTimeout(() => (rsaAns.style.color = "red"), 150);
             rsaAns.textContent = "wrong :(";
           }
-        } else if (cipher == "Ceasar") {
+        } else if (cipher == "Caesar") {
           if (ans) {
-            ceasarAns.style.color = "rgba(0,0,0,0)";
-            setTimeout(() => (ceasarAns.style.color = "green"), 150);
-            ceasarAns.textContent = "correct! - I will contact you soon";
+            caesarAns.style.color = "rgba(0,0,0,0)";
+            setTimeout(() => (caesarAns.style.color = "green"), 150);
+            caesarAns.textContent = "correct! - I will contact you soon";
           } else {
-            ceasarAns.style.color = "rgba(0,0,0,0)";
-            setTimeout(() => (ceasarAns.style.color = "red"), 150);
-            ceasarAns.textContent = "wrong :(";
+            caesarAns.style.color = "rgba(0,0,0,0)";
+            setTimeout(() => (caesarAns.style.color = "red"), 150);
+            caesarAns.textContent = "wrong :(";
           }
         }
       };

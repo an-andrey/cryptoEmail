@@ -26,7 +26,7 @@ app.post("/", async (req, res) => {
       sendEmail(studentName, cipher);
       console.log("email sent");
     }
-  } else if (cipher == "ceasar") {
+  } else if (cipher == "caesar") {
     if (cipherAns == "msg") {
       result = true;
       sendEmail(studentName, cipher);
