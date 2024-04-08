@@ -110,24 +110,6 @@
     </style>
   </head>
 
-  <script>
-    handleSubmit = function (cipher) {
-      if (document.getElementById("studentName").value != "") {
-        if (cipher == 0) {
-          document.getElementById("ceasarName").value =
-            document.getElementById("studentName").value;
-          document.forms.ceasarForm.submit();
-        } else {
-          document.getElementById("rsaName").value =
-            document.getElementById("rsaName").value;
-          document.forms.rsaForm.submit();
-        }
-      } else {
-        openModal();
-      }
-    };
-  </script>
-
   <body>
     <!-- The Modal -->
     <div id="myModal" class="modal">
@@ -176,7 +158,7 @@
       <div class="box">
         <form name="studentForm">
           <label for="studentName">Name:</label>
-          <input id="studentName" type="text" value="<%=studentName%>" /> <br />
+          <input id="studentName" type="text" /> <br />
           <small class="form-text text-muted"
             >Make sure to enter your name for me to contact you</small
           >
@@ -185,104 +167,50 @@
 
       <div class="card text-center w-50 mx-auto box">
         <div class="card-body d-flex flex-column">
-          <form name="ceasarForm" action="/ceasar" method="POST">
-            <h4 class="card-title mb-3">Ceasar cipher</h4>
-            <div class="mb-3">
-              <label for="ceasarTxt" id="test">Answer:</label>
-              <input
-                id="ceasarTxt"
-                type="text"
-                name="txt"
-                value="<%= ceasarTxt%>"
-              />
-            </div>
-            <div class="mb-3">
-              <input
-                type="hidden"
-                id="ceasarName"
-                name="name"
-                value="<%= studentName%>"
-              />
-            </div>
-          </form>
+          <h4 class="card-title mb-3">Ceasar cipher</h4>
+          <div class="mb-3">
+            <label for="ceasarTxt" id="test">Answer:</label>
+            <input id="ceasarTxt" type="text" name="txt" />
+          </div>
           <div>
-            <button
-              id="ceasarBtn"
-              onclick="handleSubmit(0)"
-              class="btn btn-success"
-            >
-              Check Answer
-            </button>
+            <button id="ceasarBtn" class="btn btn-success">Check Answer</button>
           </div>
         </div>
-        <div
-          id="ceasarAns"
-          class="card-footer"
-          style="height: 40px; color: <%=ceasarCol %>"
-        >
-          <%= ceasarAns%>
-        </div>
+        <div id="ceasarAns" class="card-footer" style="height: 40px"></div>
       </div>
 
       <div class="card text-center w-50 mx-auto box">
         <div class="card-body d-flex flex-column">
-          <form name="rsaForm" action="/rsa" method="POST">
-            <h4 class="card-title mb-3">RSA cipher</h4>
-            <div class="mb-3">
-              <label for="rsaTxt">Answer:</label>
-              <input id="rsaTxt" type="text" name="txt" value="<%= rsaTxt%>" />
-            </div>
-            <div class="mb-3">
-              <input
-                type="hidden"
-                id="rsaName"
-                name="name"
-                value="<%= studentName%>"
-              />
-            </div>
-          </form>
+          <h4 class="card-title mb-3">RSA cipher</h4>
+          <div class="mb-3">
+            <label for="rsaTxt">Answer:</label>
+            <input id="rsaTxt" type="text" name="txt" />
+          </div>
           <div>
-            <button
-              id="rsaBtn"
-              onclick="handleSubmit(1)"
-              class="btn btn-success"
-            >
-              Check Answer
-            </button>
+            <button id="rsaBtn" class="btn btn-success">Check Answer</button>
           </div>
         </div>
-        <div
-          id="rsaAns"
-          class="card-footer"
-          style="height: 40px; color: <%= rsaCol %>"
-        >
-          <%= rsaAns%>
-        </div>
+        <div id="rsaAns" class="card-footer" style="height: 40px"></div>
       </div>
     </div>
 
-    <div id="col" style="color: rgba(0, 0, 0, 0)"><%= updateCol%></div>
-
+    <form action="/" method="POST">
+      <input name="test" type="text" /><button>Submit</button>
+    </form>
     <script>
-      updateCol = document.getElementById("col").textContent;
-      if (updateCol == "ceasar") {
-        ceasarCol = document.getElementById("ceasarAns").style.color;
-        document.getElementById("ceasarAns").style.color = "rgba(0,0,0,0)";
-        setTimeout(
-          () => (document.getElementById("ceasarAns").style.color = ceasarCol),
-          100
-        );
-      } else if (updateCol == "rsa") {
-        rsaCol = document.getElementById("rsaAns").style.color;
-        document.getElementById("rsaAns").style.color = "rgba(0,0,0,0)";
-        setTimeout(
-          () => (document.getElementById("rsaAns").style.color = rsaCol),
-          100
-        );
-      }
-    </script>
+      studentName = document.getElementById("studentName");
+      rsaAns = document.getElementById("rsaAns");
+      rsaText = document.getElementById("rsaTxt");
+      ceasarAns = document.getElementById("ceasarAns");
+      ceasarText = document.getElementById("ceasarTxt");
 
-    <script>
+      document
+        .getElementById("rsaBtn")
+        .addEventListener("click", () => checkAns("rsa"));
+      document
+        .getElementById("ceasarBtn")
+        .addEventListener("click", () => checkAns("ceasar"));
+
       openModal = function () {
         // Get the modal
         var modal = document.getElementById("myModal");
@@ -302,6 +230,50 @@
             modal.style.display = "none";
           }
         };
+      };
+
+      sendEmail = function (cipherName, studentName) {
+        fetch("/", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json", // Add this line
+          },
+          body: JSON.stringify({
+            cipherName,
+            studentName,
+          }),
+        });
+      };
+
+      checkAns = function (cipher) {
+        if (studentName.value != "") {
+          if (cipher == "rsa") {
+            if (rsaTxt.value == 123) {
+              rsaAns.style.color = "rgba(0,0,0,0)";
+              setTimeout(() => (rsaAns.style.color = "green"), 150);
+              rsaAns.textContent = "correct! - I will contact you soon";
+              sendEmail("RSA", studentName.value);
+            } else {
+              rsaAns.style.color = "rgba(0,0,0,0)";
+              setTimeout(() => (rsaAns.style.color = "red"), 150);
+              rsaAns.textContent = "wrong :(";
+            }
+          } else if (cipher == "ceasar") {
+            if (ceasarTxt.value == "msg") {
+              ceasarAns.style.color = "rgba(0,0,0,0)";
+              setTimeout(() => (ceasarAns.style.color = "green"), 150);
+              ceasarAns.textContent = "correct! - I will contact you soon";
+              sendEmail("Ceasar", studentName.value);
+            } else {
+              ceasarAns.style.color = "rgba(0,0,0,0)";
+              setTimeout(() => (ceasarAns.style.color = "red"), 150);
+              ceasarAns.textContent = "wrong :(";
+            }
+          }
+        } else {
+          openModal();
+        }
       };
     </script>
   </body>

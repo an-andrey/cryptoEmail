@@ -6,60 +6,18 @@ const ejsMate = require("ejs-mate");
 const app = express();
 
 // parse application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.engine("ejs", ejsMate);
 
-let forms = {
-  rsaTxt: "",
-  ceasarTxt: "",
-  rsaAns: "",
-  rsaCol: "",
-  ceasarCol: "",
-  ceasarAns: "",
-  studentName: "",
-  updateCol: "",
-};
-
 app.get("/", (req, res) => {
-  res.render("main.ejs", { ...forms });
+  res.render("main.ejs");
 });
 
-app.post("/ceasar", (req, res) => {
-  ans = req.body.txt;
-  forms.ceasarTxt = ans;
-  forms.studentName = req.body.name;
-  forms.updateCol = "ceasar";
-  if (ans == "msg") {
-    forms.ceasarCol = "green";
-    forms.ceasarAns = "correct! - I will contact you soon";
-    sendEmail(`${req.body.name} got the Ceasar Cipher question right!`);
-  } else {
-    forms.ceasarCol = "red";
-    forms.ceasarAns = "wrong :(";
-  }
-  res.redirect("/");
-});
-
-app.post("/rsa", (req, res) => {
-  ans = req.body.txt;
-  forms.rsaTxt = ans;
-  forms.updateCol = "rsa";
-  forms.studentName = req.body.name;
-  if (ans == 123) {
-    forms.rsaCol = "green";
-    forms.rsaAns = "correct! - I will contact you soon";
-    sendEmail(`${req.body.name} got the RSA Cipher question right!`);
-  } else {
-    forms.rsaCol = "red";
-    forms.rsaAns = "wrong :(";
-  }
-  res.redirect("/");
-});
-
-let sendEmail = async function (text) {
-  //   const { email } = req.body;
-  // create reusable transporter object using the default SMTP transport
+app.post("/", async (req, res) => {
+  cipher = req.body.cipherName;
+  studentName = req.body.studentName;
   let transporter = nodemailer.createTransport({
     host: process.env.HOST,
     port: 587,
@@ -74,12 +32,12 @@ let sendEmail = async function (text) {
     from: process.env.FROM_EMAIL, // sender address
     to: process.env.TO_EMAIL, // list of receivers
     subject: "Response", // Subject line
-    text: `${text}`, // plain text body
+    text: `${studentName} got the ${cipher} question right`, // plain text body
   };
   // send mail with defined transport object
   const info = await transporter.sendMail(msg);
 
   console.log("Message sent!");
-};
+});
 
-app.listen(3000, () => console.log("listening on port 3000"));
+app.listen(8080, () => console.log("listening on port 8080"));
