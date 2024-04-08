@@ -19,20 +19,9 @@ app.post("/", async (req, res) => {
   cipher = req.body.cipherName;
   studentName = req.body.studentName;
   cipherAns = req.body.answer;
+
+  console.log(cipherAns);
   result = false;
-  if (cipher == "rsa") {
-    if (cipherAns == 123) {
-      result = true;
-      sendEmail(studentName, cipher);
-      console.log("email sent");
-    }
-  } else if (cipher == "caesar") {
-    if (cipherAns == "msg") {
-      result = true;
-      sendEmail(studentName, cipher);
-      console.log("email sent");
-    }
-  }
 
   sendEmail = async function (studentName, cipher) {
     let transporter = nodemailer.createTransport({
@@ -54,6 +43,21 @@ app.post("/", async (req, res) => {
     // send mail with defined transport object
     const info = await transporter.sendMail(msg);
   };
+
+  if (cipher == "Rsa") {
+    if (cipherAns == 123) {
+      result = true;
+      sendEmail(studentName, cipher);
+      console.log("email sent");
+    }
+  } else if (cipher == "Caesar") {
+    if (cipherAns == "msg") {
+      result = true;
+      sendEmail(studentName, cipher);
+      console.log("email sent");
+    }
+  }
+
   res.send({ result });
 });
 
