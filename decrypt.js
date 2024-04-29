@@ -45,13 +45,13 @@ app.post("/", async (req, res) => {
   };
 
   if (cipher == "Rsa") {
-    if (cipherAns == 123) {
+    if (cipherAns == 12345) {
       result = true;
       sendEmail(studentName, cipher);
       console.log("email sent");
     }
   } else if (cipher == "Caesar") {
-    if (cipherAns == "msg") {
+    if (cipherAns == "algorithm") {
       result = true;
       sendEmail(studentName, cipher);
       console.log("email sent");
