@@ -2,7 +2,6 @@ const express = require("express");
 require("dotenv").config();
 const nodemailer = require("nodemailer");
 const ejsMate = require("ejs-mate");
-
 const app = express();
 
 // parse application/x-www-form-urlencoded
@@ -10,7 +9,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.engine("ejs", ejsMate);
-
 app.get("/", (req, res) => {
   res.render("main.ejs");
 });
@@ -45,6 +43,15 @@ app.post("/", async (req, res) => {
   };
 
   if (cipher == "Rsa") {
+    /* the secret keys params are:  
+      N = 192650012256302142233
+      e = 11
+      p = 11222278033
+      q = 14227764949
+      d = 17423782075603390464
+      pq = (p-1)*(q-1)
+      print(pow(12345, e, p*q))
+    */
     if (cipherAns == 12345) {
       result = true;
       sendEmail(studentName, cipher);
