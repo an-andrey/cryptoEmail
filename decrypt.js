@@ -3,8 +3,11 @@ require("dotenv").config();
 const nodemailer = require("nodemailer");
 const ejsMate = require("ejs-mate");
 const app = express();
+var favicon = require("serve-favicon");
+var path = require("path");
 
 // parse application/x-www-form-urlencoded
+app.use(favicon(path.join(__dirname, "public", "cookie.ico")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
