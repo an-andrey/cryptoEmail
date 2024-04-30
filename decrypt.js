@@ -7,7 +7,7 @@ var favicon = require("serve-favicon");
 var path = require("path");
 
 // parse application/x-www-form-urlencoded
-app.use(favicon(path.join(__dirname, "public", "cookie.ico")));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
