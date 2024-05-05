@@ -16,6 +16,21 @@ app.get("/", (req, res) => {
   res.render("main.ejs");
 });
 
+app.get("/download", (req, res) => {
+  const filePath = "public/cryptography_talk.pdf"; // Replace with the actual file path
+
+  // Send the file for download
+  res.download(filePath, "slidesRSA.pdf", (err) => {
+    if (err) {
+      // Handle download error (e.g., file not found)
+      res.status(404).send("File not found");
+    } else {
+      // Redirect to the main page after successful download
+      res.redirect("/"); // Replace with your actual main page route
+    }
+  });
+});
+
 app.post("/", async (req, res) => {
   cipher = req.body.cipherName;
   studentName = req.body.studentName;
